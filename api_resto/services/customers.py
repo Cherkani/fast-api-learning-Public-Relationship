@@ -5,29 +5,35 @@ from ..models.customers import Customer
 from ..schemas.customers import CustomerCreate, CustomerUpdate
 
 def create(db: Session, request: CustomerCreate):
-    new_item = Customer(
-        name=request.name,
-        email=request.email,
-        address=request.address,
-        phone_number=request.phone_number
-    )
     try:
+        new_item = Customer(
+            name=request.name,
+            email=request.email,
+            address=request.address,
+            phone_number=request.phone_number
+        )
+        
         db.add(new_item)
         db.commit()
         db.refresh(new_item)
+        
+       
+        print(f"Created customer with ID: {new_item.id}")
+        return new_item
+        
     except SQLAlchemyError as e:
+        db.rollback()
         error = str(e.__dict__['orig'])
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=error
         )
-    return new_item
 
 def read_all(db: Session):
     try:
         result = db.query(Customer).all()
     except SQLAlchemyError as e:
-        error = str(e)
+        error = str(e.__dict__['orig'])
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=error

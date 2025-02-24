@@ -73,7 +73,7 @@ def update(db: Session, item_id: int, request):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         
       
-        order_item.update(request.dict(exclude={'menu_items'}, exclude_unset=True))
+        order_item.update(request.model_dump(exclude={'menu_items'}, exclude_unset=True))
 
         if hasattr(request, 'menu_items') and request.menu_items is not None:
           

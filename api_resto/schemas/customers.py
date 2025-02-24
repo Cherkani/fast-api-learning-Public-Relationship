@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict, field_validator
 from typing import Optional
 
 class CustomerBase(BaseModel):
@@ -6,6 +6,12 @@ class CustomerBase(BaseModel):
     email: EmailStr
     address: str
     phone_number: str
+
+    @field_validator('phone_number')
+    def validate_phone_number(cls, v):
+        if len(v) > 20:  # Match the database column length
+            raise ValueError('Phone number must be 20 characters or less')
+        return v
 
 class CustomerCreate(CustomerBase):
     pass
@@ -18,6 +24,5 @@ class CustomerUpdate(BaseModel):
 
 class Customer(CustomerBase):
     id: int
-
-    class Config:
-        from_attributes = True
+    
+    model_config = ConfigDict(from_attributes=True)
