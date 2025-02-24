@@ -24,7 +24,7 @@ def test_get_menu_items(client):
     assert isinstance(response.json(), list)
 
 def test_get_single_menu_item(client):
-    # First create a menu item
+   
     timestamp = int(time.time())
     menu_item_data = {
         "dishes": f"Test Dish {timestamp}",
@@ -37,13 +37,13 @@ def test_get_single_menu_item(client):
     create_response = client.post("/menu_items/", json=menu_item_data)
     menu_item_id = create_response.json()["menuItemID"]
     
-    # Then get the menu item
+   
     response = client.get(f"/menu_items/{menu_item_id}")
     assert response.status_code == 200
     assert response.json()["menuItemID"] == menu_item_id
 
 def test_update_menu_item(client):
-    # First create a menu item
+   
     timestamp = int(time.time())
     menu_item_data = {
         "dishes": f"Test Dish {timestamp}",
@@ -56,7 +56,7 @@ def test_update_menu_item(client):
     create_response = client.post("/menu_items/", json=menu_item_data)
     menu_item_id = create_response.json()["menuItemID"]
     
-    # Update the menu item
+   
     update_data = {
         "dishes": f"Updated Dish {timestamp}",
         "price": 14.99
@@ -67,7 +67,7 @@ def test_update_menu_item(client):
     assert response.json()["dishes"] == update_data["dishes"]
 
 def test_delete_menu_item(client):
-    # First create a menu item
+  
     timestamp = int(time.time())
     menu_item_data = {
         "dishes": f"Test Dish {timestamp}",
@@ -80,6 +80,6 @@ def test_delete_menu_item(client):
     create_response = client.post("/menu_items/", json=menu_item_data)
     menu_item_id = create_response.json()["menuItemID"]
     
-    # Delete the menu item
+ 
     response = client.delete(f"/menu_items/{menu_item_id}")
     assert response.status_code == 200

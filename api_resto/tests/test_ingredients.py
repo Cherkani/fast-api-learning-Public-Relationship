@@ -23,7 +23,6 @@ def test_get_ingredients(client):
     assert isinstance(response.json(), list)
 
 def test_get_single_ingredient(client):
-    # First create an ingredient
     timestamp = int(time.time())
     ingredient_data = {
         "Name": f"Test Ingredient {timestamp}",
@@ -34,13 +33,13 @@ def test_get_single_ingredient(client):
     create_response = client.post("/ingredients/", json=ingredient_data)
     ingredient_id = create_response.json()["IngredientID"]
     
-    # Then get the ingredient
+  
     response = client.get(f"/ingredients/{ingredient_id}")
     assert response.status_code == 200
     assert response.json()["IngredientID"] == ingredient_id
 
 def test_update_ingredient(client):
-    # First create an ingredient
+   
     timestamp = int(time.time())
     ingredient_data = {
         "Name": f"Test Ingredient {timestamp}",
@@ -51,7 +50,7 @@ def test_update_ingredient(client):
     create_response = client.post("/ingredients/", json=ingredient_data)
     ingredient_id = create_response.json()["IngredientID"]
     
-    # Update the ingredient
+  
     update_data = {
         "Name": f"Updated Ingredient {timestamp}",
         "Amount": 150
@@ -64,7 +63,7 @@ def test_update_ingredient(client):
     assert updated_data["Amount"] == update_data["Amount"]
 
 def test_delete_ingredient(client):
-    # First create an ingredient
+   
     timestamp = int(time.time())
     ingredient_data = {
         "Name": f"Test Ingredient {timestamp}",
@@ -75,16 +74,16 @@ def test_delete_ingredient(client):
     create_response = client.post("/ingredients/", json=ingredient_data)
     ingredient_id = create_response.json()["IngredientID"]
     
-    # Delete the ingredient
+   
     response = client.delete(f"/ingredients/{ingredient_id}")
     assert response.status_code == 200
     
-    # Verify ingredient is deleted
+   
     get_response = client.get(f"/ingredients/{ingredient_id}")
     assert get_response.status_code == 404
 
 def test_create_ingredient_duplicate_name(client):
-    # Test duplicate name validation
+  
     timestamp = int(time.time())
     ingredient_data = {
         "Name": f"Test Ingredient {timestamp}",
@@ -92,10 +91,10 @@ def test_create_ingredient_duplicate_name(client):
         "Amount": 100
     }
     
-    # Create first ingredient
+  
     first_response = client.post("/ingredients/", json=ingredient_data)
     assert first_response.status_code == 200
     
-    # Try to create second ingredient with same name
+   
     second_response = client.post("/ingredients/", json=ingredient_data)
     assert second_response.status_code == 400

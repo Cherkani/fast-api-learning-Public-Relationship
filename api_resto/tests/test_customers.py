@@ -24,7 +24,7 @@ def test_get_customers(client):
     assert isinstance(response.json(), list)
 
 def test_get_single_customer(client):
-    # First create a customer
+
     timestamp = int(time.time())
     customer_data = {
         "name": f"Test Customer {timestamp}",
@@ -36,13 +36,13 @@ def test_get_single_customer(client):
     create_response = client.post("/customers/", json=customer_data)
     customer_id = create_response.json()["id"]
     
-    # Then get the customer
+   
     response = client.get(f"/customers/{customer_id}")
     assert response.status_code == 200
     assert response.json()["id"] == customer_id
 
 def test_update_customer(client):
-    # First create a customer
+ 
     timestamp = int(time.time())
     customer_data = {
         "name": f"Test Customer {timestamp}",
@@ -54,7 +54,7 @@ def test_update_customer(client):
     create_response = client.post("/customers/", json=customer_data)
     customer_id = create_response.json()["id"]
     
-    # Update the customer
+   
     update_data = {
         "name": f"Updated Customer {timestamp}",
         "address": "456 Update St"
@@ -65,7 +65,7 @@ def test_update_customer(client):
     assert response.json()["name"] == update_data["name"]
 
 def test_delete_customer(client):
-    # First create a customer
+  
     timestamp = int(time.time())
     customer_data = {
         "name": f"Test Customer {timestamp}",
@@ -77,6 +77,6 @@ def test_delete_customer(client):
     create_response = client.post("/customers/", json=customer_data)
     customer_id = create_response.json()["id"]
     
-    # Delete the customer
+    
     response = client.delete(f"/customers/{customer_id}")
     assert response.status_code == 204
