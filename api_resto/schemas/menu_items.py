@@ -29,4 +29,4 @@ class MenuItem(MenuItemBase):
     ingredients: List[MenuItemIngredient] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True

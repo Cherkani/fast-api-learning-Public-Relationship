@@ -1,28 +1,32 @@
-
 from fastapi.testclient import TestClient
-from ..main import app
+from api_resto.main import app
+import time
 
 client = TestClient(app)
 
 def test_create_customer():
+
+    timestamp = int(time.time())
     payload = {
-        "name": "Alice Johnson",
-        "email": "alice@example.com",
-        "address": "101 Maple St",
-        "phone_number": "555-1234"
+        "name": "Aymen Cherkani",
+        "email": f"cherkani{timestamp}@example.com",
+        "address": "address test",
+        "phone_number": f"333-{timestamp}"  
     }
 
-    # Test POST /customers/
+    # POST
     response = client.post("/customers/", json=payload)
+    if response.status_code != 200:
+        print(f"Response body: {response.text}")  
     assert response.status_code == 200, f"Unexpected status code: {response.status_code}"
 
-    # Verify returned data
+    
     data = response.json()
     assert data["name"] == payload["name"]
     assert data["email"] == payload["email"]
     assert "id" in data
 
-    # Test GET /customers/{id}
+    #  GET 
     customer_id = data["id"]
     get_response = client.get(f"/customers/{customer_id}")
     assert get_response.status_code == 200
