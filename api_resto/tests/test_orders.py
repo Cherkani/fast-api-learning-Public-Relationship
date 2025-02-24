@@ -10,7 +10,7 @@ def test_create_order(client):
         "name": f"Test Customer {timestamp}",
         "email": f"test{timestamp}@example.com",
         "address": "123 Test St",
-        "phone_number": f"+123{timestamp}"[:15]  # Limit to 15 characters
+        "phone_number": f"+1234567890{timestamp}"[:20]  # At least 10 chars, max 20
     }
     
     customer_response = client.post("/customers/", json=customer_data)
@@ -63,7 +63,7 @@ def test_get_single_order(client):
         "name": f"Test Customer {timestamp}",
         "email": f"test{timestamp}@example.com",
         "address": "123 Test St",
-        "phone_number": f"+1234567{timestamp}"
+        "phone_number": f"+1234567890{timestamp}"[:20]  # At least 10 chars, max 20
     }
     
     customer_response = client.post("/customers/", json=customer_data)
@@ -108,7 +108,7 @@ def test_update_order(client):
         "name": f"Test Customer {timestamp}",
         "email": f"test{timestamp}@example.com",
         "address": "123 Test St",
-        "phone_number": f"+1234567{timestamp}"
+        "phone_number": f"+1234567890{timestamp}"[:20]  # At least 10 chars, max 20
     }
     
     customer_response = client.post("/customers/", json=customer_data)
@@ -196,7 +196,7 @@ def test_delete_order(client):
         "name": f"Test Customer {timestamp}",
         "email": f"test{timestamp}@example.com",
         "address": "123 Test St",
-        "phone_number": f"+1234567{timestamp}"
+        "phone_number": f"+1234567890{timestamp}"[:20]  # At least 10 chars, max 20
     }
     
     customer_response = client.post("/customers/", json=customer_data)
@@ -238,7 +238,7 @@ def test_order_with_invalid_menu_item(client):
         "name": f"Test Customer {timestamp}",
         "email": f"test{timestamp}@example.com",
         "address": "123 Test St",
-        "phone_number": f"+1234567{timestamp}"
+        "phone_number": f"+1234567890{timestamp}"[:20]  # At least 10 chars, max 20
     }
     
     customer_response = client.post("/customers/", json=customer_data)
