@@ -13,6 +13,7 @@ class MenuItem(Base):
     price = Column(Float, nullable=False)  
 
     ingredients = relationship("MenuItemIngredient", back_populates="menu_item") 
+    order_items = relationship("OrderMenuItem", back_populates="menu_item")
    
 
 class MenuItemIngredient(Base):
@@ -25,6 +26,5 @@ class MenuItemIngredient(Base):
 
 
     menu_item = relationship("MenuItem", back_populates="ingredients")  
-    ingredient = relationship("Ingredient", back_populates="menu_items") 
+    ingredient = relationship("Ingredient", back_populates="menu_items")
 
-    
