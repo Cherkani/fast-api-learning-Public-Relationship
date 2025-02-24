@@ -12,7 +12,7 @@ class MenuItem(Base):
     calories = Column(Integer, nullable=False, default=0) 
     price = Column(Float, nullable=False)  
 
-    ingredients = relationship("MenuItemIngredient", back_populates="menu_item") 
+    ingredients = relationship("MenuItemIngredient", back_populates="menu_item")  # Many-to-Many with Ingredients
    
 
 class MenuItemIngredient(Base):
@@ -24,7 +24,7 @@ class MenuItemIngredient(Base):
     quantity = Column(Float, nullable=False) 
 
 
-    menu_item = relationship("MenuItem", back_populates="ingredients")  
-    ingredient = relationship("Ingredient", back_populates="menu_items") 
+    menu_item = relationship("MenuItem", back_populates="ingredients")  # Link to MenuItem
+    ingredient = relationship("Ingredient", back_populates="menu_items")  # Link to Ingredient
 
     

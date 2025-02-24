@@ -7,7 +7,7 @@ from sqlalchemy.orm import joinedload
 
 def create(db: Session, request):
     new_item = model.Order(
-        customer_id=request.customer_id, 
+        customer_id=request.customer_id,  # Using customer_id as per the diagram
         total_price=request.total_price,
         status=request.status,
         tracking_number=request.tracking_number

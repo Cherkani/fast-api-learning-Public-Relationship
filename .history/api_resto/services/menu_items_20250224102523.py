@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from ..models.menu_items import MenuItem, MenuItemIngredient
-from ..models.ingredients import Ingredient 
+from ..models.ingredients import Ingredient  # Updated import
 from sqlalchemy.exc import SQLAlchemyError
 
 def create(db: Session, request):

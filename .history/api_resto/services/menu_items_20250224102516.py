@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from ..models.menu_items import MenuItem, MenuItemIngredient
-from ..models.ingredients import Ingredient 
+from ..models.ingredients import Ingredient  # Updated import
 from sqlalchemy.exc import SQLAlchemyError
 
 def create(db: Session, request):
-  
+    # Create the menu item
     new_menu_item = MenuItem(
         dishes=request.dishes,
         category=request.category,
@@ -15,9 +15,9 @@ def create(db: Session, request):
     
     try:
         db.add(new_menu_item)
-        db.flush() 
+        db.flush()  # Flush to get the menu_item_id
         
-       
+        # Create ingredient associations
         for ingredient in request.ingredients:
             ingredient_record = db.query(Ingredient).filter(Ingredient.IngredientID == ingredient.ingredient_id).first()
             if not ingredient_record:

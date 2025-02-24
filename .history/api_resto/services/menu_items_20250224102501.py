@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from ..models.menu_items import MenuItem, MenuItemIngredient
-from ..models.ingredients import Ingredient 
+from ..models.ingredients import Ingredient  # Updated import
 from sqlalchemy.exc import SQLAlchemyError
 
 def create(db: Session, request):
-  
+    # Create the menu item
     new_menu_item = MenuItem(
         dishes=request.dishes,
         category=request.category,
@@ -15,9 +15,9 @@ def create(db: Session, request):
     
     try:
         db.add(new_menu_item)
-        db.flush() 
+        db.flush()  # Flush to get the menu_item_id
         
-       
+        # Create ingredient associations
         for ingredient in request.ingredients:
             ingredient_record = db.query(Ingredient).filter(Ingredient.IngredientID == ingredient.ingredient_id).first()
             if not ingredient_record:
@@ -26,7 +26,7 @@ def create(db: Session, request):
                     detail=f"Ingredient with id {ingredient.ingredient_id} not found"
                 )
             
-          
+            # Create the association with the specified quantity
             menu_item_ingredient = MenuItemIngredient(
                 menu_item_id=new_menu_item.menuItemID,
                 ingredient_id=ingredient.ingredient_id,
@@ -45,24 +45,24 @@ def read_all(db: Session):
     return db.query(MenuItem).all()
 
 def read_one(db: Session, menu_item_id: int):
-    menu_item = db.query(MenuItem).filter(MenuItem.menuItemID == menu_item_id).first() 
+    menu_item = db.query(MenuItem).filter(MenuItem.menuItemID == menu_item_id).first()  # Use menuItemID
     if not menu_item:
         raise HTTPException(status_code=404, detail="Menu item not found")
     return menu_item
 
 def update(db: Session, menu_item_id: int, request):
     try:
-     
+        # Get the menu item
         menu_item = db.query(MenuItem).filter(MenuItem.menuItemID == menu_item_id).first()
         if not menu_item:
             raise HTTPException(status_code=404, detail="Menu item not found")
 
-      
+        # Update basic menu item fields
         for key, value in request.dict(exclude={'ingredients'}, exclude_unset=True).items():
             setattr(menu_item, key, value)
 
         if hasattr(request, 'ingredients') and request.ingredients is not None:
-          
+            # Delete existing ingredients
             db.query(MenuItemIngredient).filter(
                 MenuItemIngredient.menu_item_id == menu_item_id
             ).delete()
