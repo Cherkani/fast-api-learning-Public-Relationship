@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 import time
 
 def generate_valid_phone(timestamp):
-    # Ensure exactly 10 digits after the + sign
+    
     return f"+1{timestamp % 1000000000:09d}"
 
 def test_create_customer(client):
@@ -123,7 +123,7 @@ def test_invalid_name_with_special_chars(client):
     assert "special characters" in response.json()["detail"][0]["msg"].lower()
 
 def test_duplicate_customer_email(client):
-    # Create first customer
+    # first customer
     customer_data = {
         "name": "Test Customer",
         "email": "test.duplicate@oracle.com",
@@ -133,7 +133,7 @@ def test_duplicate_customer_email(client):
     response1 = client.post("/customers/", json=customer_data)
     assert response1.status_code == 200
 
-    # Try creating second customer with same email
+    # second customer with same email
     response2 = client.post("/customers/", json=customer_data)
     assert response2.status_code == 400
     error_detail = response2.json()["detail"].lower()
