@@ -1,26 +1,42 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from ..models.customers import Customer
 from ..schemas.customers import CustomerCreate, CustomerUpdate
 
 def create(db: Session, request: CustomerCreate):
     try:
         new_item = Customer(
-            name=request.name,
-            email=request.email,
-            address=request.address,
-            phone_number=request.phone_number
+            name=request.name.strip(),
+            email=request.email.lower(),
+            address=request.address.strip(),
+            phone_number=request.phone_number.strip()
         )
         
         db.add(new_item)
         db.commit()
         db.refresh(new_item)
         
-       
-        print(f"Created customer with ID: {new_item.id}")
         return new_item
         
+    except IntegrityError as e:
+        db.rollback()
+        error_msg = str(e).lower()
+        if "unique constraint" in error_msg:
+            if "email" in error_msg:
+                detail = "Email already exists"
+            elif "phone_number" in error_msg:
+                detail = "Phone number already exists"
+            else:
+                detail = "Duplicate entry found"
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=detail
+            )
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
     except SQLAlchemyError as e:
         db.rollback()
         error = str(e.__dict__['orig'])

@@ -1,6 +1,6 @@
 class conf:
     db_host = "localhost"
-    db_name = "restaurent_api2"
+    db_name = "restaurent_api3"
     db_port = 3306
     db_user = "root"
     db_password = ""
