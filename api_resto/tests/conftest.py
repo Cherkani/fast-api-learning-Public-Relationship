@@ -7,7 +7,7 @@ from api_resto.main import app
 from api_resto.tests.test_config import TestConfig
 from urllib.parse import quote_plus
 
-# Use MySQL for testing
+
 SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{TestConfig.db_user}:{quote_plus(TestConfig.db_password)}@{TestConfig.db_host}:{TestConfig.db_port}/{TestConfig.db_name}?charset=utf8mb4"
 
 engine = create_engine(
@@ -19,11 +19,11 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 @pytest.fixture(scope="function")
 def test_db():
-    # Create all tables
-    Base.metadata.drop_all(bind=engine)  # Clear existing data
+
+    Base.metadata.drop_all(bind=engine) 
     Base.metadata.create_all(bind=engine)
     yield
-    # Clean up after test
+ 
     Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture(scope="function")
