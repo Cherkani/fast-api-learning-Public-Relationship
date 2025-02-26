@@ -84,10 +84,9 @@ def test_delete_customer(client):
 
 
 
-
-
-
 # worse case senarios  
+
+
 def test_invalid_email_format(client):
     customer_data = {
         "name": "Test Customer",
@@ -114,7 +113,7 @@ def test_invalid_email_format(client):
 def test_invalid_email_not_email_format(client):
     customer_data = {
         "name": "Test Customer",
-        "email": "notevenanemailformat",  # Invalid email format without @
+        "email": "notevenanemailformat",  # @
         "address": "123 Test St",
         "phone_number": "+1234567890"
     }
@@ -169,16 +168,16 @@ def test_duplicate_customer_email(client):
     # second customer with same email
     response2 = client.post("/customers/", json=customer_data)
     
-    print('\n')
-    print('=' * 50)
-    print('TEST DUPLICATE CUSTOMER EMAIL RESPONSE')
-    print('=' * 50)
-    print('Status Code:', response2.status_code)
-    print('-' * 50)
-    print('Response JSON:')
-    print(json.dumps(response2.json(), indent=2))
-    print('=' * 50)
-    print('\n')
+    # print('\n')
+    # print('=' * 50)
+    # print('TEST DUPLICATE CUSTOMER EMAIL RESPONSE')
+    # print('=' * 50)
+    # print('Status Code:', response2.status_code)
+    # print('-' * 50)
+    # print('Response JSON:')
+    # print(json.dumps(response2.json(), indent=2))
+    # print('=' * 50)
+    # print('\n')
     
     assert response2.status_code == 400
     error_detail = response2.json()["detail"].lower()
