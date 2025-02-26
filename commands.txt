@@ -1,0 +1,1 @@
+pytest -s test_customers.py::test_invalid_email_format

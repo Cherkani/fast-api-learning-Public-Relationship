@@ -38,7 +38,7 @@ class CustomerBase(BaseModel):
         if not isinstance(v, str):
             raise ValueError('Phone number must be a string')
         v = v.strip()
-        pattern = r'^\+[0-9]{10}$'  # Exactly 10 digits after +
+        pattern = r'^\+[0-9]{10}$'  
         if not re.match(pattern, v):
             raise ValueError('Phone number must start with + followed by exactly 10 digits')
         return v

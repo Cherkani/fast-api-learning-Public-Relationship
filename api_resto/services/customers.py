@@ -21,7 +21,12 @@ def create(db: Session, request: CustomerCreate):
         
     except IntegrityError as e:
         db.rollback()
-        error_msg = str(e).lower()
+        error_msg = str(e).lower()        
+        print('****************************************')        
+        print('\n')
+        print(error_msg)
+        print('****************************************')
+        print('\n')
         if "unique constraint" in error_msg:
             if "email" in error_msg:
                 detail = "Email already exists"
